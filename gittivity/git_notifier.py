@@ -32,8 +32,10 @@ def event_notifier(data, old_notify_time):
 
                 actor = JsonQ(data=event).at("actor.display_login").get()
                 repo_name = JsonQ(data=event).at("repo.name").get()
-                repo_link = JsonQ(data=event).at("repo.url").get()
+
+                repo_link = "{}{}".format("https://github.com/", repo_name)
                 msg = "{} {} {}".format(actor, action, repo_name)
+
                 notify("", title=msg, open=repo_link)
                 old_notify_time = new_notify_time
                 sleep(5)
