@@ -1,5 +1,6 @@
 import requests
 import argparse
+from time import sleep
 
 from pync import notify
 from pyjsonq import JsonQ
@@ -11,39 +12,56 @@ parser.add_argument("github_handle", type=str, help="Type github username")
 args = parser.parse_args()
 
 
+def event_notifier(data, old_notify_time):
+    events = []
+    if old_notify_time:
+        events = JsonQ(data=data).at(".")\
+            .where("created_at", ">", old_notify_time)\
+            .sort_by("created_at").get()
+    else:
+        events.append(data[0])
+
+    if events:
+        for event in events:
+            event_type = JsonQ(data=event).at("type").get()
+
+            new_notify_time = JsonQ(data=event).at("created_at").get()
+            action = Manager()._match(event_type, event)
+
+            if old_notify_time != new_notify_time and action:
+
+                actor = JsonQ(data=event).at("actor.display_login").get()
+                repo_name = JsonQ(data=event).at("repo.name").get()
+                repo_link = JsonQ(data=event).at("repo.url").get()
+                msg = "{} {} {}".format(actor, action, repo_name)
+                notify("", title=msg, open=repo_link)
+                old_notify_time = new_notify_time
+                sleep(5)
+
+    return old_notify_time
+
+
 def main():
-    try:
-        old_notify_time = ""
+    old_notify_time = ""
 
-        handle_link = "{}{}{}".format(
-            "https://api.github.com/users/",
-            args.github_handle,
-            "/received_events"
-        )
+    while True:
         print("checking...")
+        try:
+            handle_link = "{}{}{}".format(
+                "https://api.github.com/users/",
+                args.github_handle,
+                "/received_events"
+            )
 
-        while True:
             src = requests.get(handle_link)
             data = src.json()
-            if data:
-                event_dict = data[0]
+            old_notify_time = event_notifier(data, old_notify_time)
 
-                event_type = JsonQ(data=event_dict).at("type").get()
+        except Exception as e:
+            print(e)
+            notify("", title=e)
 
-                new_notify_time = JsonQ(data=event_dict).at("created_at").get()
-                action = Manager()._match(event_type, event_dict)
-
-                if old_notify_time != new_notify_time and action:
-
-                    actor = JsonQ(data=event_dict).at("actor.display_login").get()
-                    repo_name = JsonQ(data=event_dict).at("repo.name").get()
-                    repo_link = JsonQ(data=event_dict).at("repo.url").get()
-                    msg = "{} {} {}".format(actor, action, repo_name)
-                    notify("", title=msg, open=repo_link)
-                    old_notify_time = new_notify_time
-
-    except requests.exceptions.ConnectionError:
-        print("connection issue")
+        sleep(5 * 60)
 
 
 if __name__ == '__main__':
