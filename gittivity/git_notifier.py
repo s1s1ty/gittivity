@@ -23,15 +23,15 @@ def event_notifier(data, old_notify_time):
 
     if events:
         for event in events:
-            event_type = JsonQ(data=event).at("type").get()
+            event_type = event.get("type")
 
-            new_notify_time = JsonQ(data=event).at("created_at").get()
+            new_notify_time = event.get("created_at")
             action = Manager()._match(event_type, event)
 
             if old_notify_time != new_notify_time and action:
 
-                actor = JsonQ(data=event).at("actor.display_login").get()
-                repo_name = JsonQ(data=event).at("repo.name").get()
+                actor = event.get("actor").get("display_login")
+                repo_name = event.get("repo").get("name")
 
                 repo_link = "{}{}".format("https://github.com/", repo_name)
                 msg = "{} {} {}".format(actor, action, repo_name)
