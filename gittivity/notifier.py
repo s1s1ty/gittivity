@@ -11,7 +11,10 @@ args = parser.parse_args()
 
 
 def _match(property):
-    """Triggered for match event type"""
+    """Triggered for match event type
+    :@param property: string
+    :@return event_type: string
+    """
     event_mapper = {
         "ForkEvent": "forked",
         "WatchEvent": "started",
@@ -43,6 +46,11 @@ def _match(property):
 
 
 def event_notifier(data, old_notify_time):
+    """Triggered for checking notifications
+    :@param data: dict/json
+    :@param old_notify_time: string
+    :@return string
+    """
     events = []
     if old_notify_time:
         events = JsonQ(data=data).at(".")\
