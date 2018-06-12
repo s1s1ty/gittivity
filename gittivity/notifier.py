@@ -1,11 +1,12 @@
-import sys
 import os
-import argparse
 from time import sleep
 
 import requests
 from pync import notify
 from pyjsonq import JsonQ
+
+github_handle = None
+notify_status = None
 
 
 def _match(property):
@@ -47,45 +48,19 @@ def help_text():
     """Provide instruction about useage"""
     print(
         "Please follow the instruction\n"
-        "* Use argument `-c config` to config github handle\n"
-        "* Use argument `-s start` to start application\n"
-        "* Use argument `-k kill` to kill application\n"
-        "* Use argument `-i hint` for instruction\n"
+        "* To start command `gittivity-start`\n"
+        "* To stop command `gittivity-stop`\n"
+        "* To config command `gittivity-config`\n"
+        "* To get hint command `gittivity` for instruction\n"
     )
-
-
-def start():
-    """Start gittivity"""
-    main()
-
-
-def stop():
-    """Stop gittivity"""
-    os.system("pkill -9 -f notifier.py")
 
 
 def configure():
-    with open("config.txt") as f:
-        line = f.readline().split(":")
-    return None if not line else line[1]
-
-
-github_handle = configure()
-
-
-def parse_arguments():
-    """Return parsed argument"""
-    parser = argparse.ArgumentParser(
-        description='Github desktop notifier',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-
-    parser.add_argument("-s", "--start", type=str, help="start gittivity")
-    parser.add_argument("-k", "--kill", type=str, help="stop gittivity")
-    parser.add_argument("-c", "--config", type=str, help="configure git profile")
-    parser.add_argument("-i", "--hint", type=str, help="provide instruction")
-
-    return parser.parse_args()
+    """Set configuration"""
+    global github_handle, notify_status
+    github_handle = input("Your github handle: ")
+    notify_status = input("Do you want only your repo status(y/n): ")
+    start()
 
 
 def event_notifier(data, old_notify_time):
@@ -117,14 +92,19 @@ def event_notifier(data, old_notify_time):
                 repo_link = "{}{}".format("https://github.com/", repo_name)
                 msg = "{} {} {}".format(actor, action, repo_name)
 
-                notify("", title=msg, open=repo_link)
+                if (notify_status == 'y' or notify_status == 'yes'):
+                    if actor == github_handle:
+                        notify("", title=msg, open=repo_link)
+                else:
+                    notify("", title=msg, open=repo_link)
+
                 old_notify_time = new_notify_time
                 sleep(5)
 
     return old_notify_time
 
 
-def main():
+def start():
     print("checking...")
     old_notify_time = ""
 
@@ -147,26 +127,15 @@ def main():
         sleep(5 * 60)
 
 
-if __name__ == '__main__':
-    try:
-        arg = parse_arguments()
-        if arg.kill == "kill":
-            stop()
+def stop():
+    """Stop gittivity"""
+    os.system("pkill -9 -f gittivity")
 
-        if arg.start == "start":
-            if github_handle:
-                start()
-            else:
-                print("Please configure first. See help `-i hint`")
 
-        if arg.config == "config":
-            if not github_handle:
-                github_handle = input("Your github handle: ")
-                with open("config.txt", "w") as text_file:
-                    text_file.write("github_handle:{}".format(github_handle))
-            start()
-
-        if arg.hint == "hint":
-            help_text()
-    except:
-        help_text()
+def main():
+    """Entry point"""
+    global github_handle
+    if github_handle:
+        start()
+    else:
+        configure()

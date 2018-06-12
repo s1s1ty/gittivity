@@ -14,6 +14,15 @@ except Exception:
     More information at: https://github.com/s1s1ty/gittivity/.
 """
 
+entry_points = {
+    'console_scripts': [
+        'gittivity = gittivity.notifier:help_text',
+        'gittivity-help = gittivity.notifier:help_text',
+        'gittivity-start = gittivity.notifier:main',
+        'gittivity-stop = gittivity.notifier:stop',
+        'gittivity-config = gittivity.notifier:configure',
+    ]
+}
 
 setup(name="gittivity",
       packages=['gittivity'],
@@ -27,6 +36,7 @@ setup(name="gittivity",
           'Natural Language :: English',
           'Topic :: Utilities',
           'Topic :: Terminals',
+          'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 3',
       ],
       author='Shaonty Dutta',
@@ -38,7 +48,5 @@ setup(name="gittivity",
       zip_safe=False,
       setup_requires=['setuptools>=38.6.0'],
       install_requires=["requests", "pyjsonq", "pync"],
-      entry_points={
-        'console_scripts': ['gittivity=gittivity'],
-      }
+      entry_points=entry_points
       )
