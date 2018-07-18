@@ -13,6 +13,22 @@ git clone github.com/s1s1ty/gittivity
 
 go to `gittivity` folder
 
+##### For help
+
 ```
-python notifier.py <github_handle> <setting>
+python notifier.py -h
 ```
+
+#### Run
+```
+python notifier.py <your_github_handle> [<setting>] &
+```
+<b>example: python notifier.py s1s1ty & </b>
+
+<b>Note :</b> setting is optional here, by default `n`
+
+### what is setting?
+If you want to get only your repo related notifications then put `y` otherwise `n`
+
+###### NOTE: you don't get follow event notifications. Because github restricted it.
+![gn](gn.png)

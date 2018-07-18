@@ -1,5 +1,4 @@
 import argparse
-from datetime import datetime
 from time import sleep
 
 import requests
@@ -87,11 +86,11 @@ def event_notifier(data, old_notify_time):
 
 
 def start():
-    print("checking...")
+    # print("checking...")
     old_notify_time = ""
 
     while True:
-        print(datetime.now())
+        # print(datetime.now())
         try:
             handle_link = "{}{}{}".format(
                 "https://api.github.com/users/",
