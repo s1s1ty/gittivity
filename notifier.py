@@ -1,4 +1,5 @@
-import os
+import argparse
+from datetime import datetime
 from time import sleep
 
 import requests
@@ -17,50 +18,31 @@ def _match(property):
     event_mapper = {
         "ForkEvent": "forked",
         "WatchEvent": "started",
-        "CheckRunEvent": "check_run",
-        "CommitCommentEvent": "commit_comment",
+        "CheckRunEvent": "checked run",
+        "CommitCommentEvent": "committed comment",
         "CreateEvent": "created",
         "DeleteEvent": "deleted",
-        "ForkApplyEvent": "fork_apply",
-        "IssueCommentEvent": "issue_comment",
+        "ForkApplyEvent": "forked apply",
+        "IssueCommentEvent": "issueed comment",
         "IssuesEvent": "iussue",
         "LabelEvent": "lebel",
         "MemberEvent": "member",
         "MembershipEvent": "membership",
         "MilestoneEvent": "milestone",
-        "PullRequestEvent": "pull_request",
-        "PullRequestReviewEvent": "pull_request_review",
-        "PullRequestReviewCommentEvent": "pull_request_review_comnt",
+        "PullRequestEvent": "pulled a request",
+        "PullRequestReviewEvent": "pulled a request review",
+        "PullRequestReviewCommentEvent": "pulled request review comment",
         "RepositoryEvent": "repo",
         "PushEvent": "pushed",
-        "RepositoryVulnerabilityAlertEvent": "repo_sequirity",
+        "RepositoryVulnerabilityAlertEvent": "repo sequirity",
         "TeamEvent": "team",
-        "TeamAddEvent": "team_add",
+        "TeamAddEvent": "added team",
     }
 
     if property not in event_mapper:
         return ""
 
     return event_mapper.get(property)
-
-
-def help_text():
-    """Provide instruction about useage"""
-    print(
-        "Please follow the instruction\n"
-        "* To start command `gittivity-start`\n"
-        "* To stop command `gittivity-stop`\n"
-        "* To config command `gittivity-config`\n"
-        "* To get hint command `gittivity` for instruction\n"
-    )
-
-
-def configure():
-    """Set configuration"""
-    global github_handle, notify_status
-    github_handle = input("Your github handle: ")
-    notify_status = input("Do you want only your repo status(y/n): ")
-    start()
 
 
 def event_notifier(data, old_notify_time):
@@ -109,6 +91,7 @@ def start():
     old_notify_time = ""
 
     while True:
+        print(datetime.now())
         try:
             handle_link = "{}{}{}".format(
                 "https://api.github.com/users/",
@@ -124,18 +107,23 @@ def start():
             print(e)
             notify("", title=e)
 
-        sleep(5 * 60)
-
-
-def stop():
-    """Stop gittivity"""
-    os.system("pkill -9 -f gittivity")
+        sleep(3 * 60)
 
 
 def main():
     """Entry point"""
-    global github_handle
-    if github_handle:
-        start()
-    else:
-        configure()
+
+    parser = argparse.ArgumentParser(description="Get user's github username.")
+    parser.add_argument("github_handle", type=str, help="Type github username")
+    parser.add_argument("notify_status", nargs='*', type=str, default='n', help="Do you want only your repo status(y/n)")
+    args = parser.parse_args()
+
+    global github_handle, notify_status
+    github_handle = args.github_handle
+    notify_status = args.notify_status
+
+    start()
+
+
+if __name__ == '__main__':
+    main()

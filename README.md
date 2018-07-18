@@ -4,25 +4,15 @@ Mac desktop notifier for git browser activity
 ![demo](demo.png)
 
 ## Installation
-Make sure you have `pip` install.
+Make sure you have python install in your machine.
 ```
-pip install gittivity
+git clone github.com/s1s1ty/gittivity
 ```
 
 ## Quick Start
-To start gittivity- command
+
+go to `gittivity` folder
+
 ```
-gittivity-start
-```
-To config gittivity- command
-```
-gittivity-config
-```
-To stop gittivity- command
-```
-gittivity-stop
-```
-For Help
-```
-gittivity-help
+python notifier.py <github_handle> <setting>
 ```
