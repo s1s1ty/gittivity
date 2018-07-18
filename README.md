@@ -1,4 +1,6 @@
 # gittivity
+[![HitCount](http://hits.dwyl.io/s1s1ty/gittivity.svg)](http://hits.dwyl.io/s1s1ty/gittivity)
+
 Mac desktop notifier for git browser activity
 
 ![demo](demo.png)
