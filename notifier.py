@@ -29,8 +29,8 @@ def _match(property):
         "MembershipEvent": "membership",
         "MilestoneEvent": "milestone",
         "PullRequestEvent": "pulled a request",
-        "PullRequestReviewEvent": "pulled a request review",
-        "PullRequestReviewCommentEvent": "pulled request review comment",
+        "PullRequestReviewEvent": "review pull request",
+        "PullRequestReviewCommentEvent": "review & comment pull request",
         "RepositoryEvent": "repo",
         "PushEvent": "pushed",
         "RepositoryVulnerabilityAlertEvent": "repo sequirity",
@@ -102,9 +102,8 @@ def start():
             data = src.json()
             old_notify_time = event_notifier(data, old_notify_time)
 
-        except Exception as e:
-            print(e)
-            notify("", title=e)
+        except Exception:
+            pass
 
         sleep(3 * 60)
 
