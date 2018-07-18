@@ -23,9 +23,9 @@ python notifier.py -h
 
 #### Run
 ```
-python notifier.py <your_github_handle> [<setting>] &
+nohup python notifier.py <your_github_handle> [<setting>] &
 ```
-<b>example: python notifier.py s1s1ty & </b>
+<b>example: nohup python notifier.py s1s1ty & </b>
 
 <b>Note :</b> setting is optional here, by default `n`
 
