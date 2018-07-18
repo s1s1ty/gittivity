@@ -6,7 +6,7 @@ Mac desktop notifier for git browser activity
 ## Installation
 Make sure you have `python` and `pip` install in your machine.
 ```
-git clone github.com/s1s1ty/gittivity
+git clone https://github.com/s1s1ty/gittivity
 ```
 
 ## Quick Start
