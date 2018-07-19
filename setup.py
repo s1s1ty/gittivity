@@ -1,5 +1,6 @@
 """Run "python setup.py install" to install gittivity."""
 
+import platform
 from setuptools import setup
 
 try:
@@ -24,6 +25,12 @@ entry_points = {
     ]
 }
 
+requirements = ['requests', 'pyjsonq']
+if platform.uname().system.lower() == 'darwin':
+    requirements.append('pync')
+elif platform.uname().system.lower() == 'windows':
+    requirements.append('win10toast')
+
 setup(name="gittivity",
       packages=['gittivity'],
       version='0.0.1',
@@ -47,6 +54,6 @@ setup(name="gittivity",
       include_package_data=True,
       zip_safe=False,
       setup_requires=['setuptools>=38.6.0'],
-      install_requires=["requests", "pyjsonq", "pync"],
+      install_requires=requirements,
       entry_points=entry_points
       )
