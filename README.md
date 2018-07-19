@@ -44,3 +44,5 @@ First check running process using `ps aux` then pick `pid` and run -
 ```
 kill -9 <pid>
 ```
+
+**If anyone want to contribute, please send me PR on my `development` branch
