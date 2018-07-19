@@ -3,7 +3,7 @@
 
 Mac desktop notifier for git browser activity
 
-![demo](demo.png)
+![demo](./images/demo.png)
 
 ## Installation
 Make sure you have `python` and `pip` install in your machine.
@@ -35,4 +35,12 @@ nohup python notifier.py <your_github_handle> [<setting>] &
 If you want to get only your repo related notifications then put `y` otherwise `n`
 
 ###### NOTE: you don't get follow event notifications. Because github restricted it.
-![gn](gn.png)
+![gn](./images/gn.png)
+
+### Stop gittivity 
+First check running process using `ps aux` then pick `pid` and run -
+
+![ps](./images/ps.png)
+```
+kill -9 <pid>
+```
