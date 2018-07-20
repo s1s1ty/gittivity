@@ -97,7 +97,7 @@ def event_notifier(data, old_notify_time):
 
 
 def start():
-    # print("checking...")
+    # print("activity checking...")
     old_notify_time = ""
 
     while True:
