@@ -7,17 +7,19 @@ from time import sleep
 import requests
 from pyjsonq import JsonQ
 
-is_mac = platform.uname().system.lower() == 'darwin'
-is_win = platform.uname().system.lower() == 'windows'
+
+is_mac = platform.system().lower() == 'darwin'
+is_win = platform.system().lower() == 'windows'
 if is_mac:
     from pync import notify as mac_notify
 if is_win:
     from win10toast import ToastNotifier
     toaster = ToastNotifier()
 
+
 github_handle = None
 notify_status = None
-title = 'gittivity'
+app_name = 'gittivity'
 
 
 def _match(property):
@@ -109,11 +111,11 @@ def event_notifier(data, old_notify_time):
 def notify(msg, link=None):
     """Platform agnostic notifier"""
     if is_mac:
-        mac_notify(msg, title=title, open=link)
+        mac_notify("", title=msg, open=link)
     elif is_win:
-        toaster.show_toast(title, msg)
+        toaster.show_toast(app_name, msg)
     else:
-        subprocess.run(['notify-send', title, msg])
+        subprocess.run(['notify-send', app_name, msg])
 
 
 def start():

@@ -25,9 +25,9 @@ entry_points = {
 }
 
 requirements = ['requests', 'pyjsonq']
-if platform.uname().system.lower() == 'darwin':
+if platform.system().lower() == 'darwin':
     requirements.append('pync')
-elif platform.uname().system.lower() == 'windows':
+elif platform.system().lower() == 'windows':
     requirements.append('win10toast')
 
 setup(name="gittivity",
