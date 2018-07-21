@@ -21,7 +21,6 @@ entry_points = {
         'gittivity-help = gittivity.notifier:help_text',
         'gittivity-start = gittivity.notifier:main',
         'gittivity-stop = gittivity.notifier:stop',
-        'gittivity-config = gittivity.notifier:configure',
     ]
 }
 
@@ -33,7 +32,7 @@ elif platform.uname().system.lower() == 'windows':
 
 setup(name="gittivity",
       packages=['gittivity'],
-      version='0.0.1',
+      version='1.0.0',
       description="Git activity terminal notifier",
       long_description=long_description,
       long_description_content_type='text/markdown',
