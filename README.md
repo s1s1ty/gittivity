@@ -1,7 +1,7 @@
 # gittivity
 [![HitCount](http://hits.dwyl.io/s1s1ty/gittivity.svg)](http://hits.dwyl.io/s1s1ty/gittivity)
 
-Mac desktop notifier for git browser activity
+Desktop notifier for git browser activity(working for mac, windows and linux)
 
 ![demo](./images/demo.png)
 
