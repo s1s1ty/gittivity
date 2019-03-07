@@ -17,7 +17,7 @@ def _match(property):
     """
     event_mapper = {
         "ForkEvent": "forked",
-        "WatchEvent": "started",
+        "WatchEvent": "starred",  # I am guessing it's a typo. When user starred a repo. There is already an event for created!
         "CheckRunEvent": "checked run",
         "CommitCommentEvent": "committed comment",
         "CreateEvent": "created",
